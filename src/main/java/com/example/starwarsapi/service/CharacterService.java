@@ -1,5 +1,6 @@
 package com.example.starwarsapi.service;
 
+import com.example.starwarsapi.dto.CharacterRequest;
 import com.example.starwarsapi.persistence.entity.Character;
 import com.example.starwarsapi.persistence.exception.CharacterAlreadyExistsException;
 import com.example.starwarsapi.persistence.exception.CharacterNotFoundException;
@@ -16,11 +17,11 @@ public interface CharacterService {
 
     List<Character> getAllCharacters();
 
-    Character createCharacter(Character character) throws CharacterAlreadyExistsException;
+    Character createCharacter(CharacterRequest characterRequest) throws CharacterAlreadyExistsException;
 
-    Character updateCharacter(Character character);
+    Character updateCharacterById(Integer id, CharacterRequest characterRequest) throws CharacterNotFoundException;
 
-    Boolean isCharacterOldWookie(Integer id);
+    Boolean isCharacterOldWookiee(Integer id);
 
     Boolean isCharacterTallerThanAverageHeightOfSpecie(Integer id);
 

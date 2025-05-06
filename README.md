@@ -2,7 +2,7 @@
 **Swagger link:** http://localhost:8080/swagger-ui/index.html
 
 ## Task 1
-Implement the ```isCharacterOldWookie``` method in the `CharacterServiceImpl` class.  
+Implement the ```isCharacterOldWookiee``` method in the `CharacterServiceImpl` class.  
 This method should check if a character belongs to the Wookiee species and their age is greater than or equal to 60 years.
 
 ## Task 2
@@ -10,7 +10,7 @@ Implement the ```isCharacterTallerThanAverageHeightOfSpecie``` method in the `Ch
 This method should retrieve a character by ID and check if the character's height is greater than the average height of the species it belongs to.
 
 ## Task 3
-Implement the ```getAverageWeightOfCharacters``` method in the `CharacterServiceImpl` class.  
+Implement the ```getAverageWeightOfAllCharacters``` method in the `CharacterServiceImpl` class.  
 This method should calculate the average weight of all characters.
 
 ## Task 4
@@ -36,6 +36,6 @@ https://www.baeldung.com/java-exceptions
 ## Task 8
 Add a global exception handler for the root `java.lang.Exception` class to handle all unhandled exceptions. 
 
-Examples: https://www.baeldung.com/exception-handling-for-rest-with-spring
+Examples: https://www.baeldung.com/exception-handling-for-rest-with-spring#2-global-exception-handling
 
 
