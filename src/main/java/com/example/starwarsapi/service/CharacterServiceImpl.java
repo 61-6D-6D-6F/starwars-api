@@ -1,5 +1,6 @@
 package com.example.starwarsapi.service;
 
+import com.example.starwarsapi.dto.CharacterRequest;
 import com.example.starwarsapi.persistence.entity.Character;
 import com.example.starwarsapi.persistence.entity.Specie;
 import com.example.starwarsapi.persistence.exception.CharacterAlreadyExistsException;
@@ -53,24 +54,44 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     /**
-     * Updates the passed character. If the character doesn't have
-     * an id then a new character will be created.
+     * Updates the passed character by ID.
      *
-     * @param character The Character to be saved.
+     * @param id The ID of the Character to be updated.
+     * @param characterRequest The Character to be saved.
      * @return The saved Character.
      */
-    public Character updateCharacter(Character character) {
+    public Character updateCharacterById(Integer id, CharacterRequest characterRequest) throws CharacterNotFoundException {
+        Character character = toCharacter(characterRequest);
+        character.setId(id);
         return characterRepository.updateCharacter(character);
     }
 
     /**
      * Creates a new character.
      *
-     * @param character The Character to be created.
+     * @param characterRequest The Character to be created.
      * @return The created character.
      */
-    public Character createCharacter(Character character) throws CharacterAlreadyExistsException {
+    public Character createCharacter(CharacterRequest characterRequest) throws CharacterAlreadyExistsException {
+        Character character = toCharacter(characterRequest);
         return characterRepository.createCharacter(character);
+    }
+
+    /**
+     * Maps CharacterRequest to Character.
+     *
+     * @param characterRequest the input DTO
+     * @return the mapped Character entity
+     */
+    private static Character toCharacter(CharacterRequest characterRequest) {
+        Character character = new Character();
+        character.setHeight(characterRequest.getHeight());
+        character.setWeight(characterRequest.getWeight());
+        character.setAge(characterRequest.getAge());
+        character.setPlanet(characterRequest.getPlanet());
+        character.setSpecie(characterRequest.getSpecie());
+        character.setName(characterRequest.getName());
+        return character;
     }
 
     // TODO: Implement the method
@@ -89,13 +110,13 @@ public class CharacterServiceImpl implements CharacterService {
      * @param id The ID of the character.
      * @return true if the character meets the condition, false otherwise.
      */
-    public Boolean isCharacterOldWookie(Integer id) {
+    public Boolean isCharacterOldWookiee(Integer id) {
         return null;
     }
 
     // TODO: Task 2. Implement the method
 
-    /*ResponseEntity*
+    /**
      * Retrieves the character by ID and checks if it is taller than the average
      * height of the species it belongs to.
      *

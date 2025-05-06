@@ -1,9 +1,11 @@
-package com.example.starwarsapi.persistence.entity;
+package com.example.starwarsapi.dto;
+
+import com.example.starwarsapi.persistence.entity.Planet;
+import com.example.starwarsapi.persistence.entity.Specie;
 
 import java.util.Objects;
 
-public class Character {
-    private Integer id;
+public class CharacterRequest {
     private int height;
     private int weight;
     private int age;
@@ -11,25 +13,13 @@ public class Character {
     private Specie specie;
     private String name;
 
-    public Character(Integer id, int height, int weight, int age, Planet planet, Specie specie, String name) {
-        this.id = id;
+    public CharacterRequest(int height, int weight, int age, Planet planet, Specie specie, String name) {
         this.height = height;
         this.weight = weight;
         this.planet = planet;
         this.specie = specie;
         this.name = name;
         this.age = age;
-    }
-
-    public Character() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -83,11 +73,10 @@ public class Character {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Character character = (Character) o;
+        CharacterRequest character = (CharacterRequest) o;
         return height == character.height &&
                 weight == character.weight &&
                 age == character.age &&
-                Objects.equals(id, character.id) &&
                 Objects.equals(planet, character.planet) &&
                 Objects.equals(specie, character.specie) &&
                 Objects.equals(name, character.name);
@@ -95,14 +84,13 @@ public class Character {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, height, weight, age, planet, specie, name);
+        return Objects.hash(height, weight, age, planet, specie, name);
     }
 
     @Override
     public String toString() {
         return "Character{" +
-                "id=" + id +
-                ", height=" + height +
+                "height=" + height +
                 ", weight=" + weight +
                 ", age=" + age +
                 ", planet=" + planet +
@@ -111,4 +99,3 @@ public class Character {
                 '}';
     }
 }
-

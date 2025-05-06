@@ -13,7 +13,7 @@ public interface CharacterRepository {
 
     List<Character> getAllCharacters();
 
-    Character updateCharacter(Character character);
+    Character updateCharacter(Character character) throws CharacterNotFoundException;
 
     Character createCharacter(Character character) throws CharacterAlreadyExistsException;
 

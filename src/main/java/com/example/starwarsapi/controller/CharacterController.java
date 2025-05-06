@@ -1,5 +1,6 @@
 package com.example.starwarsapi.controller;
 
+import com.example.starwarsapi.dto.CharacterRequest;
 import com.example.starwarsapi.persistence.entity.Character;
 import com.example.starwarsapi.service.CharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -40,16 +42,22 @@ public class CharacterController {
         return ResponseEntity.status(200).body(characterService.getAllCharacters());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Character> updateCharacterById(@PathVariable Integer id, @RequestBody CharacterRequest characterRequest) {
+        return ResponseEntity.status(200).body(characterService.updateCharacterById(id, characterRequest));
+    }
+
     //TODO Task 5. Add age validation. The method should check that the age of the character being created is more than 0 years old and less than or equal to 1000 years old and return BAD_REQUEST status if the validation fails.
     //TODO Task 7. Add exception handling.
     @PostMapping
-    public ResponseEntity<Character> createCharacter(@RequestBody Character character) {
-        return ResponseEntity.status(200).body(characterService.createCharacter(character));
+    public ResponseEntity<Character> createCharacter(@RequestBody CharacterRequest characterRequest) {
+        return ResponseEntity.status(200).body(characterService.createCharacter(characterRequest));
     }
 
-    @PutMapping
-    public ResponseEntity<Character> updateCharacter(@RequestBody Character character) {
-        return ResponseEntity.status(200).body(characterService.updateCharacter(character));
+    // TODO: Task 6. Additionally, you need to return the proper status code based on the return value of the method.
+    @GetMapping("/heaviest-by-planet")
+    public ResponseEntity<Character> getHeaviestCharacterOnPlanet(@RequestParam String planet) {
+        return ResponseEntity.status(200).body(characterService.getHeaviestCharacterOnPlanet(planet));
     }
 
     //TODO Task 7. Add exception handling.
@@ -61,7 +69,7 @@ public class CharacterController {
 
     @GetMapping("/{id}/is-character-old-wookie")
     public ResponseEntity<Boolean> isCharacterAnOldWookie(@PathVariable Integer id) {
-        Boolean isCharacterAnOldWookie = characterService.isCharacterOldWookie(id);
+        Boolean isCharacterAnOldWookie = characterService.isCharacterOldWookiee(id);
         if (isCharacterAnOldWookie == null) {
             return ResponseEntity.status(404).body(null);
         }

@@ -31,23 +31,21 @@ public class CharacterRepositoryImpl implements CharacterRepository {
     }
 
     @Override
-    public Character updateCharacter(Character character) {
-        int key = generateId(character);
-        character.setId(key);
+    public Character updateCharacter(Character character) throws CharacterNotFoundException {
+        int key = character.getId();
+        if (!characters.containsKey(key)) {
+            throw new CharacterNotFoundException(key);
+        }
         characters.put(key, character);
         return character;
     }
 
     @Override
     public Character createCharacter(Character character) throws CharacterAlreadyExistsException {
-        Integer key = generateId(character);
-        Character persistedCharacter = characters.get(key);
-        if (persistedCharacter != null) {
-            throw new CharacterAlreadyExistsException("A character with such id already exists. [id: %s]".formatted(key));
-        }
         if (isCharacterNameNotUnique(character.getName())) {
             throw new CharacterAlreadyExistsException("A character with such name already exists. [name: %s]".formatted(character.getName()));
         }
+        Integer key = generateId(character);
         character.setId(key);
         characters.put(key, character);
         return character;
@@ -99,26 +97,26 @@ public class CharacterRepositoryImpl implements CharacterRepository {
 
         Map<Integer, Character> characters = new HashMap<>();
         characters.put(1, new Character(1, 172, 77, 19, tatooine, human, "Luke Skywalker"));
-        characters.put(3, new Character(3, 165, 45, 27, naboo, human, "Padmé Amidala"));
-        characters.put(4, new Character(4, 228, 112, 200, kashyyyk, wookiee, "Chewbacca"));
-        characters.put(13, new Character(13, 228, 112, 60, kashyyyk, wookiee, "Lowbacca"));
-        characters.put(5, new Character(5, 180, 80, 35, corellia, human, "Han Solo"));
-        characters.put(6, new Character(6, 305, 1358, 600, nalHutta, hutt, "Jabba the Hutt"));
-        characters.put(7, new Character(7, 182, 77, 57, stewjon, human, "Obi-Wan Kenobi"));
-        characters.put(8, new Character(8, 202, 120, 45, tatooine, human, "Darth Vader"));
-        characters.put(9, new Character(9, 96, 32, 32, naboo, droid, "R2-D2"));
-        characters.put(10, new Character(10, 193, 89, 48, coruscant, human, "Qui-Gon Jinn"));
-        characters.put(11, new Character(11, 175, 80, 52, dathomir, zabrak, "Darth Maul"));
-        characters.put(12, new Character(12, 196, 66, 30, naboo, gungan, "Jar Jar Binks"));
-        characters.put(14, new Character(14, 150, 49, 19, alderaan, human, "Leia Organa"));
-        characters.put(15, new Character(15, 180, 70, 64, monCala, monCalamari, "Admiral Ackbar"));
-        characters.put(16, new Character(16, 175, 70, 32, tatooine, human, "Shmi Skywalker"));
-        characters.put(17, new Character(17, 178, 72, 53, coruscant, human, "Mace Windu"));
-        characters.put(19, new Character(19, 165, 60, 33, bespin, human, "Lando Calrissian"));
-        characters.put(20, new Character(20, 100, 50, 12, endor, ewok, "Wicket W. Warrick"));
-        characters.put(21, new Character(21, 230, 80, 40, kamino, kaminoan, "Taun We"));
-        characters.put(22, new Character(22, 175, 75, 45, tatooine, human, "Owen Lars"));
-        characters.put(23, new Character(23, 163, 50, 43, tatooine, human, "Beru Lars"));
+        characters.put(2, new Character(2, 165, 45, 27, naboo, human, "Padmé Amidala"));
+        characters.put(3, new Character(3, 228, 112, 200, kashyyyk, wookiee, "Chewbacca"));
+        characters.put(4, new Character(4, 180, 80, 35, corellia, human, "Han Solo"));
+        characters.put(5, new Character(5, 305, 1358, 600, nalHutta, hutt, "Jabba the Hutt"));
+        characters.put(6, new Character(6, 182, 77, 57, stewjon, human, "Obi-Wan Kenobi"));
+        characters.put(7, new Character(7, 202, 120, 45, tatooine, human, "Darth Vader"));
+        characters.put(8, new Character(8, 96, 32, 32, naboo, droid, "R2-D2"));
+        characters.put(9, new Character(9, 193, 89, 48, coruscant, human, "Qui-Gon Jinn"));
+        characters.put(10, new Character(10, 175, 80, 52, dathomir, zabrak, "Darth Maul"));
+        characters.put(11, new Character(11, 196, 66, 30, naboo, gungan, "Jar Jar Binks"));
+        characters.put(12, new Character(12, 228, 112, 60, kashyyyk, wookiee, "Lowbacca"));
+        characters.put(13, new Character(13, 150, 49, 19, alderaan, human, "Leia Organa"));
+        characters.put(14, new Character(14, 180, 70, 64, monCala, monCalamari, "Admiral Ackbar"));
+        characters.put(15, new Character(15, 175, 70, 32, tatooine, human, "Shmi Skywalker"));
+        characters.put(16, new Character(16, 178, 72, 53, coruscant, human, "Mace Windu"));
+        characters.put(17, new Character(17, 165, 60, 33, bespin, human, "Lando Calrissian"));
+        characters.put(18, new Character(18, 100, 50, 12, endor, ewok, "Wicket W. Warrick"));
+        characters.put(19, new Character(19, 230, 80, 40, kamino, kaminoan, "Taun We"));
+        characters.put(20, new Character(20, 175, 75, 45, tatooine, human, "Owen Lars"));
+        characters.put(21, new Character(21, 163, 50, 43, tatooine, human, "Beru Lars"));
         return characters;
     }
 }
