@@ -54,7 +54,7 @@ public class CharacterServiceImpl implements CharacterService {
     /**
      * Updates the passed character by ID.
      *
-     * @param id               The ID of the Character to be updated.
+     * @param id The ID of the Character to be updated.
      * @param characterRequest The Character to be saved.
      * @return The saved Character.
      */
