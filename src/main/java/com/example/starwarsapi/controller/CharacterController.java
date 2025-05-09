@@ -37,6 +37,14 @@ public class CharacterController {
         return ResponseEntity.status(200).body(character);
     }
 
+    @GetMapping("/demo/{name}")
+    public ResponseEntity<Character> getCharacterByName(@PathVariable String name) {
+        Character character = characterService.getCharacterByName(name);
+        if (character == null) {
+            return ResponseEntity.status(404).body(null);
+        }
+        return ResponseEntity.status(200).body(character);
+    }
     @GetMapping
     public ResponseEntity<List<Character>> getAllCharacters() {
         return ResponseEntity.status(200).body(characterService.getAllCharacters());
@@ -51,20 +59,34 @@ public class CharacterController {
     //TODO Task 7. Add exception handling.
     @PostMapping
     public ResponseEntity<Character> createCharacter(@RequestBody CharacterRequest characterRequest) {
-        return ResponseEntity.status(200).body(characterService.createCharacter(characterRequest));
+        try {
+            if(characterRequest.getAge() < 1 || 1000 < characterRequest.getAge()) {
+                return ResponseEntity.status(400).build();
+            }
+            return ResponseEntity.status(200).body(characterService.createCharacter(characterRequest));
+        } catch (Exception e) {
+            return ResponseEntity.status(400).build();
+        }
     }
 
     // TODO: Task 6. Additionally, you need to return the proper status code based on the return value of the method.
     @GetMapping("/heaviest-by-planet")
     public ResponseEntity<Character> getHeaviestCharacterOnPlanet(@RequestParam String planet) {
+        if(characterService.getHeaviestCharacterOnPlanet(planet) == null) {
+            return ResponseEntity.status(404).build();
+        }
         return ResponseEntity.status(200).body(characterService.getHeaviestCharacterOnPlanet(planet));
     }
 
     //TODO Task 7. Add exception handling.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCharacter(@PathVariable Integer id) {
-        characterService.deleteCharacterById(id);
-        return ResponseEntity.status(200).body(null);
+        try {
+            characterService.deleteCharacterById(id);
+            return ResponseEntity.status(200).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).build();
+        }
     }
 
     @GetMapping("/{id}/is-character-old-wookie")

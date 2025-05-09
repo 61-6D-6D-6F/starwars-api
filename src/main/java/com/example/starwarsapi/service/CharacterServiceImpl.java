@@ -9,9 +9,7 @@ import com.example.starwarsapi.persistence.repository.CharacterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
@@ -56,7 +54,7 @@ public class CharacterServiceImpl implements CharacterService {
     /**
      * Updates the passed character by ID.
      *
-     * @param id The ID of the Character to be updated.
+     * @param id               The ID of the Character to be updated.
      * @param characterRequest The Character to be saved.
      * @return The saved Character.
      */
@@ -98,6 +96,13 @@ public class CharacterServiceImpl implements CharacterService {
     // Live coding
     // Show not found
     public Character getCharacterByName(String name) {
+        List<Character> characters = getAllCharacters();
+
+        for (Character character : characters) {
+            if (character.getName().equals(name)) {
+                return character;
+            }
+        }
         return null;
     }
 
@@ -111,7 +116,9 @@ public class CharacterServiceImpl implements CharacterService {
      * @return true if the character meets the condition, false otherwise.
      */
     public Boolean isCharacterOldWookiee(Integer id) {
-        return null;
+        Character character = getCharacterById(id);
+
+        return character.getSpecie().getName().equals("Wookiee") && 60 <= character.getAge();
     }
 
     // TODO: Task 2. Implement the method
@@ -124,7 +131,9 @@ public class CharacterServiceImpl implements CharacterService {
      * @return true if the character is taller than the average height of its species, false otherwise.
      */
     public Boolean isCharacterTallerThanAverageHeightOfSpecie(Integer id) {
-        return false;
+        Character character = getCharacterById(id);
+
+        return character.getSpecie().getAverageHeight() < character.getHeight();
     }
 
     // TODO: Task 3. Implement the method
@@ -135,7 +144,14 @@ public class CharacterServiceImpl implements CharacterService {
      * @return The average weight of all characters.
      */
     public Double getAverageWeightOfAllCharacters() {
-        return 0.0;
+        List<Character> characters = getAllCharacters();
+        double  allWeight = 0;
+
+        for (Character character : characters) {
+            allWeight += character.getWeight();
+        }
+
+        return allWeight / characters.size();
     }
 
     // TODO: Task 4. Find and fix the bug
@@ -153,12 +169,12 @@ public class CharacterServiceImpl implements CharacterService {
             Specie specie = character.getSpecie();
             String specieName = specie.getName();
             if (heaviestCharacterBySpecie.containsKey(specieName)) {
-                heaviestCharacterBySpecie.put(specieName, character);
-            } else {
                 Character currentHeaviest = heaviestCharacterBySpecie.get(specieName);
                 if (currentHeaviest.getWeight() < character.getWeight()) {
                     heaviestCharacterBySpecie.put(specieName, character);
                 }
+            } else {
+                heaviestCharacterBySpecie.put(specieName, character);
             }
         }
 
@@ -177,6 +193,17 @@ public class CharacterServiceImpl implements CharacterService {
      * @return The heaviest Character on the specified planet, or null if not found.
      */
     public Character getHeaviestCharacterOnPlanet(String planetName) {
-        return null;
+        List<Character> characters = characterRepository.getAllCharacters();
+        Character heaviest = null;
+
+        for (Character character : characters) {
+            if (character.getPlanet().getName().equals(planetName)) {
+                if (heaviest == null || heaviest.getWeight() < character.getWeight()) {
+                    heaviest = character;
+                }
+            }
+        }
+
+        return heaviest;
     }
 }
